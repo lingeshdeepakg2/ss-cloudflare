@@ -15,7 +15,7 @@
  * @wordpress-plugin
  * Plugin Name:       SS Cloudflare
  * Plugin URI:        https://https://spotlightstudios.co.uk/
- * Description:       SS Cloudflare plugin
+ * Description:       To provide a simple interface that allows us automatically create and return tokens and rules for a domain
  * Version:           1.0.0
  * Author:            Spotlight
  * Author URI:        https://https://spotlightstudios.co.uk/
@@ -66,10 +66,14 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-ss-cloudflare.php';
 
 /**
  * Include config file 
- * Include curl file
  */
 require plugin_dir_path( __FILE__ ) . 'includes/config.php';
 
+/**
+ * Include update file for updaing plugin 
+ */
+require plugin_dir_path( __FILE__ ) . 'update.php';
+$update = new CloudflareGitHubPluginUpdater(CloudFlareSLUG,CloudFlareGITHUBUSERNAME,CloudFlareGITHUBPROJECTREPO,CloudFlareACCESSTOKEN);
 
 /**
  * Begins execution of the plugin.

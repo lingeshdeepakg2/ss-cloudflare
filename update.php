@@ -1,6 +1,6 @@
 <?php
-require_once plugin_dir_path( __FILE__ ) . "config.php";
-class ToolkitGitHubPluginUpdater {
+// require_once plugin_dir_path( __FILE__ ) . "includes/config.php";
+class CloudflareGitHubPluginUpdater {
    
     private $slug; // plugin slug
     private $gitHubUsername; // GitHub username
@@ -19,7 +19,7 @@ class ToolkitGitHubPluginUpdater {
         $this->username = $gitHubUsername;
         $this->repo = $gitHubProjectrepo;
         $this->accessToken = $accessToken;
-
+        
         // Add Authorization Token to authToken_download_package
 		add_filter( 'upgrader_pre_download',
             function() {
