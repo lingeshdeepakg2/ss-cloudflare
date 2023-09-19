@@ -21,18 +21,18 @@ class CloudflareGitHubPluginUpdater {
         $this->accessToken = $accessToken;
         
         // Add Authorization Token to authToken_download_package
-		// add_filter( 'upgrader_pre_download',
-        //     function() {
-        //         add_filter( 'http_request_args', [ $this, 'authToken_download_package' ], 15, 2 );
-        //         return false; // upgrader_pre_download filter default return value.
-        //     }
-        // );
+		add_filter( 'upgrader_pre_download',
+            function() {
+                add_filter( 'http_request_args', [ $this, 'authToken_download_package' ], 15, 2 );
+                return false; // upgrader_pre_download filter default return value.
+            }
+        );
     }
 
     /**
      * Get information regarding our plugin from WordPress
      * 
-     * @since 1.0.0
+     * @since 2.0.0
      */
     private function GetPluginData() {
         $this->slug = $this->pluginFile;
@@ -42,14 +42,15 @@ class CloudflareGitHubPluginUpdater {
     /**
      * Get information regarding our plugin from GitHub
      * 
-     * @since 1.0.0
+     * @since 2.0.0
      */
     private function getPluginReleaseInfo() {
         // Only do this once
         if ( !empty( $this->githubAPIResult ) ) {
             return;
         }
-        
+
+        $args = [];
         // Query the GitHub API
         $url = "https://api.github.com/repos/{$this->username}/{$this->repo}/releases";
 
@@ -60,6 +61,7 @@ class CloudflareGitHubPluginUpdater {
 
         // Get the results 
         $this->githubAPIResult = wp_remote_retrieve_body( wp_remote_get( $url) );
+        
         if ( !empty( $this->githubAPIResult ) ) {
             $this->githubAPIResult = @json_decode( $this->githubAPIResult );
         }
@@ -68,13 +70,12 @@ class CloudflareGitHubPluginUpdater {
         if ( is_array( $this->githubAPIResult ) ) {
             $this->githubAPIResult = $this->githubAPIResult[0];
         }
-		
     }
 
     /**
      * Push in plugin version information to get the update notification
      * 
-     * @since 1.0.0
+     * @since 2.0.0
      */
     public function getPluginUpdateInformation( $transient ) {
 
@@ -88,7 +89,7 @@ class CloudflareGitHubPluginUpdater {
         $this->getPluginReleaseInfo();
 
         // Check the versions if we need to do an update
-        $doUpdate = version_compare( $this->githubAPIResult->tag_name, $transient->checked[$this->slug] );
+        $doUpdate = version_compare( $this->githubAPIResult->tag_name, $transient->checked['ss-cloudflare/ss-cloudflare.php'] );
 		
         // Update the transient to include our updated plugin data
         if ( $doUpdate == 1 ) {
@@ -109,7 +110,7 @@ class CloudflareGitHubPluginUpdater {
     /**
      * Push in plugin version information to display in the details lightbox
      * 
-     * @since 1.0.0
+     * @since 2.0.0
      */
     public function setPluginInfo( $false, $action , $response ) {;
         if ( $action !== 'plugin_information' ) {
@@ -146,7 +147,7 @@ class CloudflareGitHubPluginUpdater {
     /**
      * Perform additional actions to successfully install our plugin
      * 
-     * @since 1.0.0
+     * @since 2.0.0
      */
     public function postInstall( $true, $hook_extra, $result ) {
         // Get plugin information
@@ -173,17 +174,17 @@ class CloudflareGitHubPluginUpdater {
     /**
      * Add Authorization Token to authToken_download_package
      * 
-     * @since 1.0.0
+     * @since 2.0.0
      */
-    // public function authToken_download_package( $args, $url ) {
-	// 	if ( null !== $args['filename'] ) {
-	// 		if( $this->accessToken ) { 
-	// 			$args = array_merge( $args, array( "headers" => array( "Authorization" => "token {$this->accessToken}" ) ) );
-	// 		}
-	// 	}
+    public function authToken_download_package( $args, $url ) {
+		if ( null !== $args['filename'] ) {
+			if( $this->accessToken ) { 
+				$args = array_merge( $args, array( "headers" => array( "Authorization" => "token {$this->accessToken}" ) ) );
+			}
+		}
 		
-	// 	remove_filter( 'http_request_args', [ $this, 'authToken_download_package' ] );
+		remove_filter( 'http_request_args', [ $this, 'authToken_download_package' ] );
 
-	// 	return $args;
-	// }
+		return $args;
+	}
 }
