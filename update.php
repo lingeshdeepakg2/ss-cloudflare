@@ -32,7 +32,7 @@ class CloudflareGitHubPluginUpdater {
     /**
      * Get information regarding our plugin from WordPress
      * 
-     * @since 2.0.0
+     * @since 1.0.0
      */
     private function GetPluginData() {
         $this->slug = $this->pluginFile;
@@ -42,7 +42,7 @@ class CloudflareGitHubPluginUpdater {
     /**
      * Get information regarding our plugin from GitHub
      * 
-     * @since 2.0.0
+     * @since 1.0.0
      */
     private function getPluginReleaseInfo() {
         // Only do this once
@@ -74,7 +74,7 @@ class CloudflareGitHubPluginUpdater {
     /**
      * Push in plugin version information to get the update notification
      * 
-     * @since 2.0.0
+     * @since 1.0.0
      */
     public function getPluginUpdateInformation( $transient ) {
 
@@ -109,7 +109,7 @@ class CloudflareGitHubPluginUpdater {
     /**
      * Push in plugin version information to display in the details lightbox
      * 
-     * @since 2.0.0
+     * @since 1.0.0
      */
     public function setPluginInfo( $false, $action , $response ) {;
         if ( $action !== 'plugin_information' ) {
@@ -146,7 +146,7 @@ class CloudflareGitHubPluginUpdater {
     /**
      * Perform additional actions to successfully install our plugin
      * 
-     * @since 2.0.0
+     * @since 1.0.0
      */
     public function postInstall( $true, $hook_extra, $result ) {
         // Get plugin information
@@ -173,7 +173,7 @@ class CloudflareGitHubPluginUpdater {
     /**
      * Add Authorization Token to authToken_download_package
      * 
-     * @since 2.0.0
+     * @since 1.0.0
      */
     public function authToken_download_package( $args, $url ) {
 		if ( null !== $args['filename'] ) {
