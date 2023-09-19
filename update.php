@@ -49,7 +49,7 @@ class CloudflareGitHubPluginUpdater {
         if ( !empty( $this->githubAPIResult ) ) {
             return;
         }
-        $args = [];
+        
         // Query the GitHub API
         $url = "https://api.github.com/repos/{$this->username}/{$this->repo}/releases";
 
@@ -59,7 +59,7 @@ class CloudflareGitHubPluginUpdater {
         // }
 
         // Get the results 
-        $this->githubAPIResult = wp_remote_retrieve_body( wp_remote_get( $url , $args) );
+        $this->githubAPIResult = wp_remote_retrieve_body( wp_remote_get( $url) );
         if ( !empty( $this->githubAPIResult ) ) {
             $this->githubAPIResult = @json_decode( $this->githubAPIResult );
         }
