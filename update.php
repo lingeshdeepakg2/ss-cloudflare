@@ -21,12 +21,12 @@ class CloudflareGitHubPluginUpdater {
         $this->accessToken = $accessToken;
         
         // Add Authorization Token to authToken_download_package
-		add_filter( 'upgrader_pre_download',
-            function() {
-                add_filter( 'http_request_args', [ $this, 'authToken_download_package' ], 15, 2 );
-                return false; // upgrader_pre_download filter default return value.
-            }
-        );
+		// add_filter( 'upgrader_pre_download',
+        //     function() {
+        //         add_filter( 'http_request_args', [ $this, 'authToken_download_package' ], 15, 2 );
+        //         return false; // upgrader_pre_download filter default return value.
+        //     }
+        // );
     }
 
     /**
@@ -49,14 +49,14 @@ class CloudflareGitHubPluginUpdater {
         if ( !empty( $this->githubAPIResult ) ) {
             return;
         }
-
+        $args = [];
         // Query the GitHub API
         $url = "https://api.github.com/repos/{$this->username}/{$this->repo}/releases";
 
         // We need the access token for private repos
-        if ( !empty( $this->accessToken ) ) {
-			$args['headers']['Authorization'] = "bearer {$this->accessToken}";
-        }
+        // if ( !empty( $this->accessToken ) ) {
+		// 	$args['headers']['Authorization'] = "bearer {$this->accessToken}";
+        // }
 
         // Get the results 
         $this->githubAPIResult = wp_remote_retrieve_body( wp_remote_get( $url , $args) );
@@ -175,15 +175,15 @@ class CloudflareGitHubPluginUpdater {
      * 
      * @since 1.0.0
      */
-    public function authToken_download_package( $args, $url ) {
-		if ( null !== $args['filename'] ) {
-			if( $this->accessToken ) { 
-				$args = array_merge( $args, array( "headers" => array( "Authorization" => "token {$this->accessToken}" ) ) );
-			}
-		}
+    // public function authToken_download_package( $args, $url ) {
+	// 	if ( null !== $args['filename'] ) {
+	// 		if( $this->accessToken ) { 
+	// 			$args = array_merge( $args, array( "headers" => array( "Authorization" => "token {$this->accessToken}" ) ) );
+	// 		}
+	// 	}
 		
-		remove_filter( 'http_request_args', [ $this, 'authToken_download_package' ] );
+	// 	remove_filter( 'http_request_args', [ $this, 'authToken_download_package' ] );
 
-		return $args;
-	}
+	// 	return $args;
+	// }
 }
