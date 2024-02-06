@@ -7,12 +7,7 @@ body {
     font-family: 'Montserrat', sans-serif;
     font-size: 16px;
 }
-.heading { 
-    font-size: 30px;
-    font-weight: bold;
-    text-transform: uppercase;
-    padding: 10px 10px 1px 16px;
-}
+
 .blue-btn, .input-field { 
     border-radius: 5px;
     margin: 6px;
@@ -59,12 +54,12 @@ body {
     background: rgba(255,255,255,0.8) url("../images/loader.gif") center no-repeat;
 }
 /* Turn off scrollbar when body element has the loading class */
-body.loading{
-    overflow: hidden;   
+body .loading{
+    overflow: hidden !important;   
 }
 /* Make spinner image visible when body element has the loading class */
 body.loading .overlay{
-    display: block;
+    display: block !important;
 }
 
 /* Thumbnail settings */
@@ -81,25 +76,12 @@ main {
 
 table{
     width: 100%;
-    margin: 10px 64px 10px 64px;
 }
 
-.ss-cloudflare-right input[type=text]{
+.ss-cloudflare-control input[type=text],.ss-cloudflare-tab2 input[type=text],.ss-cloudflare-control input[type=password]{
     width: 90%;
     margin: 10px;
     padding: 7px;
-}
-
-.table-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.ss-cloudflare-main-page{
-    background-color: white;
-    border: 1px solid #f0f0f1;
-    width: 99%;
 }
 
 .check-icon {
@@ -126,14 +108,6 @@ table{
     font-size: 24px; /* Adjust the font size as needed */
     color: red;
     font-weight: bold;
-}
-
-.ss-cloudflare-left-col{
-    display: block;
-    position: relative;
-    top: 43px;
-    left: 41px;
-    right: 0;
 }
 
 #accountTokenId{
@@ -303,3 +277,76 @@ bottom: 50%;
 [data-tooltip]:after {
     border-width: 7px 7px 0px 7px;
 }
+
+
+.ss-cloudflare-tab1,.ss-cloudflare-tab2{
+    height: 80vh;
+    background-color: #FFF;
+    border: 1px solid #c3c4c7;
+}
+
+.tab1 table{
+    border: none;
+    box-shadow: none;
+}
+
+.ss-cloudflare-control{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 37px 37px 37px 82px;
+}
+
+.input-group{
+    width: 90%;
+}
+
+label{
+    font-weight: bold;
+}
+
+.ss-cloudflare-tab2-col{
+    margin: 50px;
+}   
+
+.successMessage,.errorMessage{
+    display: none;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.successMessage{
+    color: green;
+}
+.errorMessage{
+    color: red;
+}
+
+.password-container {
+    position: relative;
+  }
+  
+  #password {
+    padding-right: 30px; /* Add space for the icon on the right */
+  }
+  
+  .toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 11%;
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
+  
+  /* Styling for the eye icon (using Font Awesome in this example) */
+  .toggle-password.fas.fa-eye::before {
+    content: "\f06e"; /* Unicode character for the eye icon */
+  }
+  
+  /* Styling for the crossed-out eye icon when password is visible */
+  .toggle-password.fas.fa-eye-slash::before {
+    content: "\f070"; /* Unicode character for the crossed-out eye icon */
+  }
+  
+  

@@ -10,9 +10,8 @@ jQuery(document).on({
         jQuery("body").removeClass("loading");
     }
 });
-$(document).ready(function () {
+jQuery(document).ready(function () {
     // tooltip is showing on the copy Clipboard
-    // var clipboard = new Clipboard('.copy-icon');
 
     // Tooltip
     jQuery('.copy-icon').tooltip({
@@ -28,33 +27,45 @@ $(document).ready(function () {
         setTooltip(btn, 'Copied');
         hideTooltip(btn);
     });
+
+    $("#toggle-password-api").click(function() {
+        var passwordField = $("#api-token");
+        var icon = $(this);
     
-    // $("#copy-icon").click(function () {
-    //     // Your copy logic here
+        if (passwordField.attr("type") === "password") {
+          passwordField.attr("type", "text");
+          icon.removeClass("fa-eye-slash").addClass("fa-eye");
+        } else {
+          passwordField.attr("type", "password");
+          icon.removeClass("fa-eye").addClass("fa-eye-slash");
+        }
+    });
 
-    //     // Set the tooltip text
-    //     $("#copy-icon").tooltip("option", "content", "Copied!");
+    $("#toggle-password-bearer").click(function() {
+        var passwordField = $("#bearer-token");
+        var icon = $(this);
+    
+        if (passwordField.attr("type") === "password") {
+          passwordField.attr("type", "text");
+          icon.removeClass("fa-eye-slash").addClass("fa-eye");
+        } else {
+          passwordField.attr("type", "password");
+          icon.removeClass("fa-eye").addClass("fa-eye-slash");
+        }
+    });
 
-    //     // Show the tooltip
-    //     $("#copy-icon").tooltip("open");
-
-    //     // Close the tooltip after a delay (optional)
-    //     setTimeout(function () {
-    //         $("#copy-icon").tooltip("close");
-    //     }, 2000); // Close after 2 seconds (adjust as needed)
-    // });
 });
 jQuery(document).on('click', '#domainCheck', function (e) {
     e.preventDefault();
     clearFields();
+    jQuery("body").addClass("loading");
     jQuery('.accountTokenDiv').hide();
     if (jQuery('#domainName').val() == '' || jQuery('#api-token').val() == '' || jQuery('#bearer-token').val() == '' || jQuery('#account-email').val() == '') {
         jQuery('#domainNameCheck').text('');
-        jQuery('#errorMessage').html('<div uk-alert class="uk-alert-warning">Please fill the Email, API token, Bearer Token and Domain name.<a class="uk-alert-close" uk-close></a></div>');
-        showMessageDiv('#errorMessage');
+        jQuery('.errorMessage').text('Please fill the Email, API token, Bearer Token and Domain name.');
+        showMessageDiv('.errorMessage');
     } else {
-        console.log('https://api.cloudflare.com/client/v4/zones?name=' + jQuery('#domainName').val());
-        jQuery('#errorMessage').text('');
+        jQuery('.errorMessage').text('');
         jQuery.ajax({
             method: 'POST',
             url: ss_cloudflare_ajax_url.ajaxurl,
@@ -62,25 +73,24 @@ jQuery(document).on('click', '#domainCheck', function (e) {
                 'action' : 'domain_curl',
                 'url': 'https://api.cloudflare.com/client/v4/zones?name=' + jQuery('#domainName').val(),
                 'name': jQuery('#domainName').val(),
-                'email': jQuery("#account-email").val(),
-                'apiToken': jQuery("#api-token").val(),
-                'bearerToken': jQuery("#bearer-token").val(),
+                'email': jQuery("#cloudflare_email").val(),
+                'apiToken': jQuery("#cloudflare_api_token").val(),
+                'bearerToken': jQuery("#cloudflare_bearer_token").val(),
             },
             cache: false,
             success: function (response) {
-                console.log(response);
                 var data = jQuery.parseJSON(response);
                 // Given domain is not matched it will return warning
                 if (!data.status) {
-                    jQuery('#errorMessage').html('<div uk-alert class="uk-alert-warning">' + data.output + '<a class="uk-alert-close" uk-close></a></div>');
-                    showMessageDiv('#errorMessage');
+                    jQuery('.errorMessage').text(data.output);
+                    showMessageDiv('.errorMessage');
                     $(".check-icon").remove();
                     $(".close-icon").remove();
                     jQuery('#domainNameCheck').append('<span class="close-icon">x</span>');
                 } else {
                     if (data.output.length == 0) {
-                        jQuery('#errorMessage').html('<div uk-alert class="uk-alert-warning">Domain not exist<a class="uk-alert-close" uk-close></a></div>');
-                        showMessageDiv('#errorMessage');
+                        jQuery('.errorMessage').text('Domain not exist');
+                        showMessageDiv('.errorMessage');
                         $(".check-icon").remove();
                         $(".close-icon").remove();
                         jQuery('#domainNameCheck').append('<span class="close-icon">x</span>');
@@ -92,12 +102,14 @@ jQuery(document).on('click', '#domainCheck', function (e) {
                         $(".close-icon").remove();
                         jQuery('#domainNameCheck').addClass("check-icon");
                         wafrules();
+                        elastic_mail_list_rules();
                     }
                 }
             },
         });
     }
 });
+
 function wafrules() {
     jQuery.ajax({
         method: 'POST',
@@ -106,9 +118,9 @@ function wafrules() {
             'action': 'waf_rules_list',
             'zoneId': jQuery("#zoneId").val(),
             'zoneName': jQuery('#zoneName').val(),
-            'email': jQuery("#account-email").val(),
-            'apiToken': jQuery("#api-token").val(),
-            'bearerToken': jQuery("#bearer-token").val(),
+            'email': jQuery("#cloudflare_email").val(),
+            'apiToken': jQuery("#cloudflare_api_token").val(),
+            'bearerToken': jQuery("#cloudflare_bearer_token").val(),
         },
         cache: false,
         success: function (response) {
@@ -152,13 +164,13 @@ function clearFields() {
 jQuery(document).on('click', '#account-token', function (e) {
     e.preventDefault();
     if (jQuery('#domainName').val() == '' || jQuery('#api-token').val() == '' || jQuery('#bearer-token').val() == '' || jQuery('#account-email').val() == '') {
-        jQuery('#errorMessage').html('<div uk-alert class="uk-alert-warning">Please fill the Email, API token, Bearer Token and Domain name.<a class="uk-alert-close" uk-close></a></div>');
-        showMessageDiv('#errorMessage');
+        jQuery('.errorMessage').text('Please fill the Email, API token, Bearer Token and Domain name.');
+        showMessageDiv('.errorMessage');
     } else if (jQuery('#zoneName').val() == '') {
-        jQuery('#errorMessage').html('<div uk-alert class="uk-alert-warning">Please provide a valid domain name and do a Domain check<a class="uk-alert-close" uk-close></a></div>');
-        showMessageDiv('#errorMessage');
+        jQuery('.errorMessage').text('Please provide a valid domain name and do a Domain check');
+        showMessageDiv('.errorMessage');
     } else {
-        jQuery('#errorMessage').text('');
+        jQuery('.errorMessage').text('');
         jQuery.ajax({
             method: 'POST',
             url: ss_cloudflare_ajax_url.ajaxurl,
@@ -166,9 +178,9 @@ jQuery(document).on('click', '#account-token', function (e) {
                 'action' : 'accountToken',
                 'zoneId': jQuery("#zoneId").val(),
                 'zoneName': jQuery('#zoneName').val(),
-                'email': jQuery("#account-email").val(),
-                'apiToken': jQuery("#api-token").val(),
-                'bearerToken': jQuery("#bearer-token").val(),
+                'email': jQuery("#cloudflare_email").val(),
+                'apiToken': jQuery("#cloudflare_api_token").val(),
+                'bearerToken': jQuery("#cloudflare_bearer_token").val(),
             },
             success: function (response) {
                 var data = jQuery.parseJSON(response);
@@ -176,14 +188,14 @@ jQuery(document).on('click', '#account-token', function (e) {
                     jQuery('#accountTokenId').val(data.output);
                     jQuery('.accountTokenDiv').show();
                 } else {
-                    jQuery('#errorMessage').html('<div uk-alert class="uk-alert-warning">' + data.output + '<a class="uk-alert-close" uk-close></a></div>');
-                    showMessageDiv('#errorMessage');
+                    jQuery('.errorMessage').text(data.output);
+                    showMessageDiv('.errorMessage');
                 }
             },
         });
     }
 });
-// if (jQuery('#domainName').val() == '' || jQuery('#api-token').val() == '' || jQuery('#bearer-token').val() == '') 
+
 jQuery(document).on('change', '#domainName, #api-token, #bearer-token, #account-email', function (e) {
     // alert("test");
     clearFields();
@@ -204,17 +216,20 @@ jQuery(document).on('click', '.ruleBtnClick', function (e) {
 
     }else if(btnId == 'failover'){
         action = 'failover';
+
+    }else if(btnId == "elasticEmail"){
+        action = 'elastic_email_list';
     }
 
     e.preventDefault();
     if (jQuery('#domainName').val() == '' || jQuery('#api-token').val() == '' || jQuery('#bearer-token').val() == '' || jQuery('#account-email').val() == '') {
-        jQuery('#errorMessage').html('<div uk-alert class="uk-alert-warning">Please fill the Email, API token, Bearer Token and Domain name.<a class="uk-alert-close" uk-close></a></div>');
-        showMessageDiv('#errorMessage');
+        jQuery('.errorMessage').text('Please fill the Email, API token, Bearer Token and Domain name.');
+        showMessageDiv('.errorMessage');
     } else if (jQuery('#zoneName').val() == '') {
-        jQuery('#errorMessage').html('<div uk-alert class="uk-alert-warning">Please provide a valid domain name and do a Domain check<a class="uk-alert-close" uk-close></a></div>');
-        showMessageDiv('#errorMessage');
+        jQuery('.errorMessage').text('Please provide a valid domain name and do a Domain check.');
+        showMessageDiv('.errorMessage');
     } else {
-        jQuery('#errorMessage').text('');
+        jQuery('.errorMessage').text('');
         jQuery.ajax({
             method: 'POST',
             url: ss_cloudflare_ajax_url.ajaxurl,
@@ -222,19 +237,19 @@ jQuery(document).on('click', '.ruleBtnClick', function (e) {
                 'zoneId': jQuery("#zoneId").val(),
                 'zoneName': jQuery('#zoneName').val(),
                 'action': action,
-                'email': jQuery("#account-email").val(),
-                'apiToken': jQuery("#api-token").val(),
-                'bearerToken': jQuery("#bearer-token").val(),
+                'email': jQuery("#cloudflare_email").val(),
+                'apiToken': jQuery("#cloudflare_api_token").val(),
+                'bearerToken': jQuery("#cloudflare_bearer_token").val(),
             },
             cache: false,
             success: function (response) {
                 var data = jQuery.parseJSON(response);
                 if (data.status) {
-                    jQuery('#successMessage').html('<div uk-alert class="uk-alert-primary">' + btnVal + ' ' + data.output + '<a class="uk-alert-close" uk-close></a></div>');
-                    showMessageDiv('#successMessage');
+                    jQuery('.successMessage').text( btnVal + ' ' + data.output );
+                    showMessageDiv('.successMessage');
                 } else {
-                    jQuery('#errorMessage').html('<div uk-alert class="uk-alert-warning">' + data.output + '<a class="uk-alert-close" uk-close></a></div>');
-                    showMessageDiv('#errorMessage');
+                    jQuery('.errorMessage').text(data.output);
+                    showMessageDiv('.errorMessage');
                 }
                 jQuery('#' + btnId).append('<span class="check-icon"></span>');
             },
@@ -250,12 +265,6 @@ function copyToClipboard(element) {
     jQuerytemp.remove();
 }
 
-// Tooltip
-// $('.copy-icon').tooltip({
-//     trigger: 'click',
-//     placement: 'top'
-// });
-
 function setTooltip(btn, message) {
     btn.tooltip('hide')
         .attr('data-tooltip', message)
@@ -269,8 +278,111 @@ function hideTooltip(btn) {
 }
 
 function showMessageDiv(btn) {
-    jQuery(btn).show();
+    jQuery(btn).css('display','block');
     setTimeout(function () {
         jQuery(btn).hide();
-    }, 2500);
+    }, 4000);
 }
+
+jQuery(document).on('change blur','.ss-cloudflare-input', function(){
+    ss_cloudflare_ajax_call();
+});
+
+function ss_cloudflare_ajax_call(){
+    jQuery('.successMessage').text('Please wait...').css('display','block');
+
+    var from_cloudflare_form = jQuery("#from_cloudflarecontrol_form").val();
+
+    var account_email = jQuery('#account-email').val();
+    var api_token = jQuery('#api-token').val();
+    var bearer_token = jQuery('#bearer-token').val();
+
+    jQuery.ajax({
+        type: 'POST',
+        url: ss_cloudflare_ajax_url.ajaxurl, // Replace with your AJAX handler URL
+        data:{
+            'action' : 'save_cloudflare_details',
+            'account_email' : account_email,
+            'api_token' : api_token,
+            'bearer_token' : bearer_token,
+            'from_cloudflare_form' : from_cloudflare_form
+            
+        },
+        success: function(response) {
+            jQuery('.successMessage').text(response.data.message).css('display','block');
+            setTimeout(function() {
+                jQuery('.successMessage').css('display','none');
+            }, 4000);
+        },
+        error: function(xhr, textStatus, errorThrown) {
+            jQuery('.errorMessage').text("Something went worng").css('display','block');
+            setTimeout(function() {
+                jQuery('.errorMessage').css('display','none');
+            }, 4000);
+        }
+    });
+}
+
+function elastic_mail_list_ajax(){
+
+    var btnId = jQuery(".ruleBtnClick").attr("name");
+    var btnVal = jQuery(".ruleBtnClick").val();
+
+    jQuery('.successMessage').text('Please wait...').css('display','block');
+
+    var account_email = jQuery("#cloudflare_email").val();
+    var api_token = jQuery("#cloudflare_api_token").val();
+    var bearer_token = jQuery("#cloudflare_bearer_token").val();
+
+    jQuery.ajax({
+        method: 'POST',
+        url: ss_cloudflare_ajax_url.ajaxurl,
+        data: {
+            'zoneId': $("#zoneId").val(),
+            'zoneName': $('#zoneName').val(),
+            'email': account_email,
+            'apiToken': api_token,
+            'bearerToken': bearer_token,
+            'action' : 'elastic_email_list'
+        },
+        success: function (response) {
+            var data = jQuery.parseJSON(response);
+            if (data.status) {
+                jQuery('.successMessage').text( btnVal + ' ' + data.output );
+                showMessageDiv('.successMessage');
+            } else {
+                jQuery('.errorMessage').text(data.output);
+                showMessageDiv('.errorMessage');
+            }
+            jQuery('#' + btnId).append('<span class="check-icon"></span>');
+        },
+    });
+}
+
+function elastic_mail_list_rules(){
+
+
+    jQuery.ajax({
+        method: 'POST',
+        url: ss_cloudflare_ajax_url.ajaxurl,
+        data: {
+            'action': 'show_elastic_email',
+            'zoneId': jQuery("#zoneId").val(),
+            'zoneName': jQuery('#zoneName').val(),
+            'email': jQuery("#cloudflare_email").val(),
+            'apiToken': jQuery("#cloudflare_api_token").val(),
+            'bearerToken': jQuery("#cloudflare_bearer_token").val(),
+        },
+        cache: false,
+        success: function (response) {
+            var res = jQuery.parseJSON(response);
+            console.log(res);
+            $(".close-icon").remove();
+            if (res.status == true) {
+                jQuery('#elasticEmail').addClass("check-icon");
+            }
+        },
+    });
+}
+
+

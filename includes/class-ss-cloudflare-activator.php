@@ -22,6 +22,10 @@
  */
 class Ss_Cloudflare_Activator {
 
+	public function __construct() {
+		do_action( 'activate' );
+	}
+
 	/**
 	 * Short Description. (use period)
 	 *
@@ -30,7 +34,9 @@ class Ss_Cloudflare_Activator {
 	 * @since    1.0.0
 	 */
 	public static function activate() {
-
+		add_option( 'ss_cloudflare_email', '' );
+		add_option( 'ss_cloudflare_api_token', '');
+		add_option( 'ss_cloudflare_bearer_token', '');
 	}
 
 }

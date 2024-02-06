@@ -16,7 +16,7 @@
  * Plugin Name:       SS Cloudflare
  * Plugin URI:        https://https://spotlightstudios.co.uk/
  * Description:       To provide a simple interface that allows us automatically create and return tokens and rules for a domain
- * Version:           1.0.1
+ * Version:           1.0.0
  * Author:            Spotlight
  * Author URI:        https://https://spotlightstudios.co.uk/
  * License:           GPL-2.0+
@@ -35,7 +35,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'SS_CLOUDFLARE_VERSION', '1.0.1' );
+define( 'SS_CLOUDFLARE_VERSION', '1.0.0' );
 
 /**
  * The code that runs during plugin activation.
@@ -64,16 +64,8 @@ register_deactivation_hook( __FILE__, 'deactivate_ss_cloudflare' );
  */
 require plugin_dir_path( __FILE__ ) . 'includes/class-ss-cloudflare.php';
 
-/**
- * Include config file 
- */
-require plugin_dir_path( __FILE__ ) . 'config.php';
 
-/**
- * Include update file for updaing plugin 
- */
-require plugin_dir_path( __FILE__ ) . 'update.php';
-$update = new CloudflareGitHubPluginUpdater(CloudFlareSLUG,CloudFlareGITHUBUSERNAME,CloudFlareGITHUBPROJECTREPO,CloudFlareACCESSTOKEN);
+require plugin_dir_path( __FILE__ ) . 'includes/config.php';
 
 /**
  * Begins execution of the plugin.

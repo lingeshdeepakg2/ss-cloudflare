@@ -5,7 +5,7 @@ Donate link: https://spotlightstudios.co.uk/
 Tags: comments, spam
 Requires at least: 6.0
 Tested up to: 6.3
-Stable tag: 1.0.1
+Stable tag: 1.0.0
 Requires PHP : 7.0 or above 
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -30,10 +30,6 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
  - Provide the ability to verify the domain's validity, generate a token, and include options for incorporating WAF rules for the website.
 
 == Change Log ==
-
- = 1.0.1 =
-  
-  - Bug Fix
 
  = 1.0.0 =
   
