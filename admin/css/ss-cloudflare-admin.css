@@ -2,121 +2,83 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
+  @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600&display=swap");
 
 body {
-    font-family: 'Montserrat', sans-serif;
+    font-family: "Montserrat", sans-serif;
     font-size: 16px;
 }
 
-.blue-btn, .input-field { 
-    border-radius: 5px;
-    margin: 6px;
-}
-.blue-btn { 
-    background: #5E5DF0;
-    box-shadow: #5E5DF0 0 10px 20px -10px;
-    box-sizing: border-box;
-    color: #FFFFFF;
-    cursor: pointer;
-    font-weight: 700;
-    line-height: 24px;
-    opacity: 1;
-    outline: 0 solid transparent;
-    padding: 8px 18px;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-    width: fit-content;
-    word-break: break-word;
-    border: 0;
-    transition: all ease 0.3s;
-}
-.blue-btn:hover {
-    background: #403fbe;
-}
-.copy-icon {     
-    padding-top: 10px;
-    padding-left: 10px;  
+.accountToken_btn {
+    background-color: #ea861b !important;
+    color: #fff !important;
+    border: 1px solid transparent !important;
+    border-radius: 50px !important;
 }
 
-@media (max-width: 767px) {
-    .button-field { display: block; margin-bottom: 15px; }
+.uk-tab > .uk-active > a {
+    color: #28333e;
+    border-color: #ea861b;
 }
-
-.overlay{
+.uk-tab > * > a {
+    display: flex;
+    align-items: center;
+    column-gap: 0.25em;
+    justify-content: center;
+    padding: 10px 10px;
+    color: #a3a4a8;
+    transition: 0.1s ease-in-out;
+    transition-property: color, background-color, border-color, box-shadow;
+    line-height: 20px;
+    text-transform: none;
+    letter-spacing: 0;
+    border-bottom: 3px solid transparent;
+}
+.uk-tab::before {
     display: none;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    z-index: 999;
-    background: rgba(255,255,255,0.8) url("../images/loader.gif") center no-repeat;
 }
-/* Turn off scrollbar when body element has the loading class */
-body .loading{
-    overflow: hidden !important;   
-}
-/* Make spinner image visible when body element has the loading class */
-body.loading .overlay{
-    display: block !important;
-}
-
-/* Thumbnail settings */
-@media (max-width: 750px) {
-html {
-    animation-duration: 0.6s;
-    font-size: 1em;
-}
-main {
-    font-size: 1.1em;
-    padding: 6%;
-}
-}
-
-table{
-    width: 100%;
-}
-
-.ss-cloudflare-control input[type=text],.ss-cloudflare-tab2 input[type=text],.ss-cloudflare-control input[type=password]{
-    width: 90%;
-    margin: 10px;
-    padding: 7px;
-}
-
-.check-icon {
-    width: 30px;
-    height: 30px;
-    color: green; /* Color of the checkmark */
+.uk-modal-dialog {
     position: relative;
+    box-sizing: border-box;
+    margin: 0 auto;
+    width: 600px;
+    max-width: 100% !important;
+    background: #fafafa;
+    opacity: 0;
+    transform: translateY(-100px);
+    transition: 0.3s linear;
+    transition-property: opacity, transform;
+    border-radius: 20px;
 }
-
-.check-icon::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(54%, -66%) rotate(34deg);
-    width: 10px;
-    height: 20px;
-    border: 4px solid #00cc00;
-    border-top: 3px solid white;
-    border-left: 3px solid white;
+.uk-modal-header {
+    display: flow-root;
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0);
+    border-bottom: 1px solid #e5e5e7;
 }
-
-.close-icon {
-    font-size: 24px; /* Adjust the font size as needed */
-    color: red;
-    font-weight: bold;
+.uk-form-icon:not(.uk-form-icon-flip)~.uk-input {
+    padding-left: 38px!important;
 }
-
-#accountTokenId{
-    width: 500px !important;
+.uk-input {
+    height: 38px;
+    vertical-align: middle;
+    display: inline-block;
+    border-bottom: 1px solid #e5e5e7 !important;
+    border: none;
 }
-
-#accountTokenDiv{
-    width: 90% !important;
+.uk-button-default {
+    background-color: #f7f7f7;
+    color: #4e555c;
+    border: 1px solid transparent;
+    border-radius: 50px;
 }
+.ruleBtnClick { 
+    border-radius: 50px; 
+    background-color: #1f3e5c;
+    color: #fff;
+    border: 1px solid transparent;
+}
+.uk-form-icon svg:nth-child(2), .uk-icon svg:nth-child(2) { display: none; }
 
 [data-tooltip] {
     --arrow-size: 5px;
@@ -279,74 +241,91 @@ bottom: 50%;
 }
 
 
-.ss-cloudflare-tab1,.ss-cloudflare-tab2{
-    height: 80vh;
-    background-color: #FFF;
-    border: 1px solid #c3c4c7;
-}
-
-.tab1 table{
-    border: none;
-    box-shadow: none;
-}
-
-.ss-cloudflare-control{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 37px 37px 37px 82px;
-}
-
-.input-group{
-    width: 90%;
-}
-
-label{
-    font-weight: bold;
-}
-
-.ss-cloudflare-tab2-col{
-    margin: 50px;
-}   
-
-.successMessage,.errorMessage{
-    display: none;
-    text-align: center;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-.successMessage{
-    color: green;
-}
-.errorMessage{
-    color: red;
-}
-
-.password-container {
+.check-icon {
+    width: 30px;
+    height: 30px;
+    color: green; /* Color of the checkmark */
     position: relative;
-  }
-  
-  #password {
-    padding-right: 30px; /* Add space for the icon on the right */
-  }
-  
-  .toggle-password {
+}
+
+.check-icon::before {
+    content: '';
     position: absolute;
     top: 50%;
-    right: 11%;
-    transform: translateY(-50%);
-    cursor: pointer;
-  }
-  
-  /* Styling for the eye icon (using Font Awesome in this example) */
-  .toggle-password.fas.fa-eye::before {
-    content: "\f06e"; /* Unicode character for the eye icon */
-  }
-  
-  /* Styling for the crossed-out eye icon when password is visible */
-  .toggle-password.fas.fa-eye-slash::before {
-    content: "\f070"; /* Unicode character for the crossed-out eye icon */
-  }
-  
-  
+    left: 50%;
+    transform: translate(54%, -66%) rotate(34deg);
+    width: 10px;
+    height: 20px;
+    border: 4px solid #00cc00;
+    border-top: 3px solid white;
+    border-left: 3px solid white;
+}
+
+.RulesSet{
+    background: green !important;
+}
+
+.close-icon {
+    font-size: 24px; /* Adjust the font size as needed */
+    color: red;
+    font-weight: bold;
+}
+
+
+.password-input { position: relative; }
+.password-input i { 
+    position: absolute;
+    right: 7px;
+    top: 13px;
+ }
+
+ .password-input input, .password-input input:focus,
+ .email-input input, .email-input input:focus,
+ .accountTokenDiv input, .accountTokenDiv input:focus {
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
+    box-shadow: none !important;
+}
+.ss-cloudflare-input {
+    border-radius: 50px !important;
+    width: auto !important;
+}
+.domainName { 
+    border-left: 0 !important;
+    border-right: 0 !important;
+    border-top: 0 !important;
+    box-shadow: none !important;
+}
+
+#uk-tab-6 .uk-button:not(:disabled) { width: auto; }
+
+.domainCheck { border-radius: 50px !important; }
+.ruleBtnClick { background-color: #1f3e5c !important; border-radius: 50px !important; }
+.ruleBtnClick.RulesSet { background-color: green !important; }
+.api-credentials { width: 490px !important; }
+
+.accountTokenDiv { position: relative; }
+.accountTokenDiv .copyIcon {
+    position: absolute;
+    right: 7px;
+    top: 7px;
+}
+
+.accountTokenDiv input { background-color: transparent !important; }
+
+/* Make spinner image visible when body element has the loading class */
+body.loading .overlay{
+    display: block !important;
+}
+
+.overlay{
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    background: rgba(255,255,255,0.8) url("../images/loader.gif") center no-repeat;
+}

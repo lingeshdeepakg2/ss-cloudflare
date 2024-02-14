@@ -29,7 +29,7 @@ jQuery(document).ready(function () {
     });
 
     $("#toggle-password-api").click(function() {
-        var passwordField = $("#api-token");
+        var passwordField = jQuery("#api-token");
         var icon = $(this);
     
         if (passwordField.attr("type") === "password") {
@@ -41,8 +41,8 @@ jQuery(document).ready(function () {
         }
     });
 
-    $("#toggle-password-bearer").click(function() {
-        var passwordField = $("#bearer-token");
+    jQuery("#toggle-password-bearer").click(function() {
+        var passwordField = jQuery("#bearer-token");
         var icon = $(this);
     
         if (passwordField.attr("type") === "password") {
@@ -56,9 +56,11 @@ jQuery(document).ready(function () {
 
 });
 jQuery(document).on('click', '#domainCheck', function (e) {
+    
     e.preventDefault();
     clearFields();
     jQuery("body").addClass("loading");
+    $(this).addClass("disabled");
     jQuery('.accountTokenDiv').hide();
     if (jQuery('#domainName').val() == '' || jQuery('#api-token').val() == '' || jQuery('#bearer-token').val() == '' || jQuery('#account-email').val() == '') {
         jQuery('#domainNameCheck').text('');
@@ -84,22 +86,22 @@ jQuery(document).on('click', '#domainCheck', function (e) {
                 if (!data.status) {
                     jQuery('.errorMessage').text(data.output);
                     showMessageDiv('.errorMessage');
-                    $(".check-icon").remove();
-                    $(".close-icon").remove();
+                    jQuery(".check-icon").remove();
+                    jQuery(".close-icon").remove();
                     jQuery('#domainNameCheck').append('<span class="close-icon">x</span>');
                 } else {
                     if (data.output.length == 0) {
                         jQuery('.errorMessage').text('Domain not exist');
                         showMessageDiv('.errorMessage');
-                        $(".check-icon").remove();
-                        $(".close-icon").remove();
+                        jQuery(".check-icon").remove();
+                        jQuery(".close-icon").remove();
                         jQuery('#domainNameCheck').append('<span class="close-icon">x</span>');
                     } else {
                         // Once zone is there it's set value for particular fields. otherwise it go to else part
                         jQuery('#zoneId').val(data.output.zoneId);
                         jQuery('#zoneName').val(data.output.zoneName);
                         jQuery('#domainName').val(data.output.zoneName);
-                        $(".close-icon").remove();
+                        jQuery(".close-icon").remove();
                         jQuery('#domainNameCheck').addClass("check-icon");
                         wafrules();
                         elastic_mail_list_rules();
@@ -129,19 +131,19 @@ function wafrules() {
             var myNewArray = data.filter(function (elem, index, self) {
                 return index === self.indexOf(elem);
             });
-            $(".close-icon").remove();
+            $("#ruleBtnClick").removeClass("RulesSet");
             jQuery.each(myNewArray, function (key, value) {
                 if (value == 'XMLRPC Block') {
-                    jQuery('#xmlrpc').addClass("check-icon");
+                    jQuery('.xmlrpc').addClass("RulesSet");
 
                 } else if (value == 'UK Admin / Login') {
-                    jQuery('#adminLogin').addClass("check-icon");
+                    jQuery('.adminLogin').addClass("RulesSet");
 
                 } else if (value == 'Failover') {
-                    jQuery('#failover').addClass("check-icon");
+                    jQuery('.failover').addClass("RulesSet");
 
                 } else if (value == 'Admin Security Check') {
-                    jQuery('#adminSecurity').addClass("check-icon");
+                    jQuery('.adminSecurity').addClass("RulesSet");
 
                 }
             });
@@ -151,12 +153,11 @@ function wafrules() {
 
 function clearFields() {
 
-    jQuery('#xmlrpc').text('');
-    jQuery('#adminLogin').text('');
-    jQuery('#failover').text('');
-    jQuery('#adminSecurity').text('');
-    jQuery('#adminbypass').text('');
-    // jQuery('#elasticMail').text('');
+    jQuery('.xmlrpc').removeClass("RulesSet");
+    jQuery('.adminLogin').removeClass("RulesSet");
+    jQuery('.failover').removeClass("RulesSet");
+    jQuery('.adminSecurity').removeClass("RulesSet");
+    jQuery('.elasticMail').removeClass("RulesSet");
     jQuery('#zoneId').val('');
     jQuery('#zoneName').val('');
     jQuery('.accountTokenDiv').hide();
@@ -178,9 +179,9 @@ jQuery(document).on('click', '#account-token', function (e) {
                 'action' : 'accountToken',
                 'zoneId': jQuery("#zoneId").val(),
                 'zoneName': jQuery('#zoneName').val(),
-                'email': jQuery("#cloudflare_email").val(),
-                'apiToken': jQuery("#cloudflare_api_token").val(),
-                'bearerToken': jQuery("#cloudflare_bearer_token").val(),
+                'email': jQuery("#account-email").val(),
+                'apiToken': jQuery("#api-token").val(),
+                'bearerToken': jQuery("#bearer-token").val(),
             },
             success: function (response) {
                 var data = jQuery.parseJSON(response);
@@ -251,7 +252,7 @@ jQuery(document).on('click', '.ruleBtnClick', function (e) {
                     jQuery('.errorMessage').text(data.output);
                     showMessageDiv('.errorMessage');
                 }
-                jQuery('#' + btnId).append('<span class="check-icon"></span>');
+                jQuery('.' + btnId).addClass('RulesSet');
             },
         });
     }
@@ -284,7 +285,7 @@ function showMessageDiv(btn) {
     }, 4000);
 }
 
-jQuery(document).on('change blur','.ss-cloudflare-input', function(){
+jQuery(document).on('click','.ss-cloudflare-input', function(){
     ss_cloudflare_ajax_call();
 });
 
@@ -293,6 +294,7 @@ function ss_cloudflare_ajax_call(){
 
     var from_cloudflare_form = jQuery("#from_cloudflarecontrol_form").val();
 
+    
     var account_email = jQuery('#account-email').val();
     var api_token = jQuery('#api-token').val();
     var bearer_token = jQuery('#bearer-token').val();
@@ -338,8 +340,8 @@ function elastic_mail_list_ajax(){
         method: 'POST',
         url: ss_cloudflare_ajax_url.ajaxurl,
         data: {
-            'zoneId': $("#zoneId").val(),
-            'zoneName': $('#zoneName').val(),
+            'zoneId': jQuery("#zoneId").val(),
+            'zoneName': jQuery('#zoneName').val(),
             'email': account_email,
             'apiToken': api_token,
             'bearerToken': bearer_token,
@@ -354,7 +356,7 @@ function elastic_mail_list_ajax(){
                 jQuery('.errorMessage').text(data.output);
                 showMessageDiv('.errorMessage');
             }
-            jQuery('#' + btnId).append('<span class="check-icon"></span>');
+            jQuery('.' + btnId).addClass('RulesSet');
         },
     });
 }
@@ -377,9 +379,9 @@ function elastic_mail_list_rules(){
         success: function (response) {
             var res = jQuery.parseJSON(response);
             console.log(res);
-            $(".close-icon").remove();
+            $("#ruleBtnClick").removeClass("RulesSet");
             if (res.status == true) {
-                jQuery('#elasticEmail').addClass("check-icon");
+                jQuery('.elasticEmail').addClass("RulesSet");
             }
         },
     });

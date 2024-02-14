@@ -261,111 +261,235 @@ class Ss_Cloudflare {
 		echo '<h1>SS Cloudflare</h1>';
 		$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'cloudflarecontrol';
 		?>
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
-					<h2 class="nav-tab-wrapper">
-						<a href="?page=ss-cloudflare&tab=cloudflarecontrol" class="nav-tab <?php echo $active_tab == 'cloudflarecontrol' ? 'nav-tab-active' : ''; ?>">Cloudflare Control</a>
-						<a href="?page=ss-cloudflare&tab=cloudflaredomaincheck" class="nav-tab <?php echo $active_tab == 'cloudflaredomaincheck' ? 'nav-tab-active' : ''; ?>">Domain Check</a>
-						<span class="errorMessage"></span>
-						<span class="successMessage"></span>
-					</h2>
-					<?php if($active_tab == 'cloudflarecontrol'){?>
-						<form id="ss_cloudflarecontrol_form" action="">
-							<input type="hidden" name="from_cloudflarecontrol_form"  id="from_cloudflarecontrol_form" value="cloudflarecontrol_form"> 
-							<div id="ss-cloudflare-tab1 cloudflarecontrol" style="display:block;" class="ss-cloudflare-tab1">
-								<table>
-									<td>
-										<div class="ss-cloudflare-control">
-											<!-- Loader -->
-											<div class="overlay"></div>
-											<div class="input-group">
-												<label for="">Cloudflare Email:</label>
-												<input id="account-email" name="account-email" class="input-field ss-cloudflare-input" type="text" value="<?php echo (get_option('ss_cloudflare_email') != '')?get_option('ss_cloudflare_email'):''; ?>" aria-label="Input" placeholder="Account Email">	
-											</div>
-
-											<div class="input-group">
-												<label for="">Cloudflare API Token:</label>
-												<div class="password-container">
-													<input id="api-token" class="input-field ss-cloudflare-input" type="password" value="<?php echo (get_option('ss_cloudflare_api_token') != '')?get_option('ss_cloudflare_api_token'):''; ?>" aria-label="Input" placeholder="API Token">
-													<i class="fa fa-eye-slash toggle-password" id="toggle-password-api"></i>
+		<section class="setting-option">
+			<div class="uk-section-default uk-section">
+				<div class="uk-container">
+					<div class="uk-grid tm-grid-expand uk-child-width-1-1 uk-grid-margin">
+						<div class="uk-width-1-1">
+							<div class="uk-margin">
+								<ul class="el-nav uk-margin uk-tab" uk-tab="connect: #js-0; itemNav: #js-1; animation: uk-animation-fade;" role="tablist">
+									<li class="uk-active" role="presentation"><a href="?page=ss-cloudflare&tab=cloudflarecontrol" aria-selected="true" role="tab" id="uk-tab-1" aria-controls="uk-tab-2">Settings</a></li>
+									<li role="presentation"><a href="" aria-selected="false" tabindex="-1" role="tab" id="uk-tab-3" aria-controls="uk-tab-4">Options</a></li>
+									<li role="presentation"><a href="?page=ss-cloudflare&tab=cloudflaredomaincheck" aria-selected="false" tabindex="-1" role="tab" id="uk-tab-5" aria-controls="uk-tab-6">Cloudflare Control</a></li>
+								</ul>
+								<span class="errorMessage"></span>
+								<span class="successMessage"></span>
+								<ul id="js-0" class="uk-switcher" uk-height-match="row: false" role="presentation" style="touch-action: pan-y pinch-zoom;">
+									<li class="el-item uk-margin-remove-first-child uk-active" id="uk-tab-2" role="tabpanel" aria-labelledby="uk-tab-1" style="min-height: 337.3px;">
+										<h3 class="el-title uk-margin-top uk-margin-remove-bottom">Settings</h3>
+										<input type="hidden" name="from_cloudflarecontrol_form"  id="from_cloudflarecontrol_form" value="cloudflarecontrol_form"> 
+										<div class="el-content uk-panel uk-margin-top">
+											<form class="uk-form-stacked uk-width-large api-credentials">
+												<div class="uk-margin">
+													<label class="uk-form-label" for="">Cloudflare API Credentials</label>
+													<div class="uk-child-width-1-1">
+														<div class="uk-inline email-input">
+															<span class="uk-form-icon uk-icon" uk-icon="icon: user">
+																<svg width="20" height="20" viewBox="0 0 20 20">
+																	<circle fill="none" stroke="#000" stroke-width="1.1" cx="9.9" cy="6.4" r="4.4"></circle>
+																	<path fill="none" stroke="#000" stroke-width="1.1" d="M1.5,19 C2.3,14.5 5.8,11.2 10,11.2 C14.2,11.2 17.7,14.6 18.5,19.2"></path>
+																</svg>
+															</span>
+															<input class="uk-input" id="account-email" name="account-email" type="text" placeholder="your@emailaddress.com" value="<?php echo (get_option('ss_cloudflare_email') != '')?get_option('ss_cloudflare_email'):''; ?>"/>
+														</div>
+														<div class="uk-inline password-input">
+															<span class="uk-form-icon uk-icon" uk-icon="icon: cog">
+																<svg width="20" height="20" viewBox="0 0 20 20">
+																	<circle fill="none" stroke="#000" cx="9.997" cy="10" r="3.31"></circle>
+																	<path
+																		fill="none"
+																		stroke="#000"
+																		d="M18.488,12.285 L16.205,16.237 C15.322,15.496 14.185,15.281 13.303,15.791 C12.428,16.289 12.047,17.373 12.246,18.5 L7.735,18.5 C7.938,17.374 7.553,16.299 6.684,15.791 C5.801,15.27 4.655,15.492 3.773,16.237 L1.5,12.285 C2.573,11.871 3.317,10.999 3.317,9.991 C3.305,8.98 2.573,8.121 1.5,7.716 L3.765,3.784 C4.645,4.516 5.794,4.738 6.687,4.232 C7.555,3.722 7.939,2.637 7.735,1.5 L12.263,1.5 C12.072,2.637 12.441,3.71 13.314,4.22 C14.206,4.73 15.343,4.516 16.225,3.794 L18.487,7.714 C17.404,8.117 16.661,8.988 16.67,10.009 C16.672,11.018 17.415,11.88 18.488,12.285 L18.488,12.285 Z"
+																	></path>
+																</svg>
+															</span>
+															<input class="uk-input" id="api-token" type="password" placeholder="Cloudflare API Token" value="<?php echo (get_option('ss_cloudflare_api_token') != '')?get_option('ss_cloudflare_api_token'):''; ?>"/>
+															<i class="fa fa-eye-slash toggle-password" id="toggle-password-api"></i>
+														</div>
+														<div class="uk-inline password-input">
+															<span class="uk-form-icon uk-icon" uk-icon="icon: nut">
+																<svg width="20" height="20" viewBox="0 0 20 20">
+																	<polygon fill="none" stroke="#000" points="2.5,5.7 10,1.3 17.5,5.7 17.5,14.3 10,18.7 2.5,14.3"></polygon>
+																	<circle fill="none" stroke="#000" cx="10" cy="10" r="3.5"></circle>
+																</svg>
+															</span>
+															<input class="uk-input" type="password" id="bearer-token" placeholder="Cloudflare Bearer Token (for creating new API Tokens)" value="<?php echo (get_option('ss_cloudflare_bearer_token') != '')?get_option('ss_cloudflare_bearer_token'):''; ?>"/>
+															<i class="fa fa-eye-slash toggle-password" id="toggle-password-bearer"></i>
+														</div>
+													</div>
 												</div>
-											</div>
-
-											<div class="input-group">
-												<label for="">Cloudflare Bearer Token:</label>
-												<div class="password-container">
-													<input id="bearer-token" class="input-field ss-cloudflare-input" type="password" value="<?php echo (get_option('ss_cloudflare_bearer_token') != '')?get_option('ss_cloudflare_bearer_token'):''; ?>" aria-label="Input" placeholder="Bearer Token">
-													<i class="fa fa-eye-slash toggle-password" id="toggle-password-bearer"></i>
-												</div>
-											</div>
+											</form>
+											<p><a class="uk-button uk-button-default ss-cloudflare-input" id="save_cloudflare_controls">Save</a></p>
 										</div>
-									</td>
-								<table>
-							<div>
-						</form>
-					<?php }?>
-					<?php if($active_tab == 'cloudflaredomaincheck'){?>
-					
-						<form action="" id="ss_domincheck_form">
-							<input type="hidden" name="cloudflare_email" id="cloudflare_email" value="<?php echo (get_option('ss_cloudflare_email') != '')?get_option('ss_cloudflare_email'):''; ?>">
-							<input type="hidden" name="cloudflare_api_token" id="cloudflare_api_token" value="<?php echo (get_option('ss_cloudflare_api_token') != '')?get_option('ss_cloudflare_api_token'):''; ?>">
-							<input type="hidden" name="cloudflare_bearer_token" id="cloudflare_bearer_token" value="<?php echo (get_option('ss_cloudflare_bearer_token') != '')?get_option('ss_cloudflare_bearer_token'):''; ?>">
-
-							<div id="ss-cloudflare-tab2 cloudflaredomaincheck" class="ss-cloudflare-tab2">
-								<table>
-									<td>
-										<div class="overlay"></div>
-										<div class="ss-cloudflare-tab2-col">
-											<div class="input-group">
-												<input name="name" class="input-field" id="domainName" type="text" placeholder="Domain" aria-label="Input">
-												<span class="material-symbols-rounded" id="domainNameCheck"></span>
+									</li>
+									<li class="el-item uk-margin-remove-first-child" id="uk-tab-4" role="tabpanel" aria-labelledby="uk-tab-3" style="">
+										<h3 class="el-title uk-margin-top uk-margin-remove-bottom">Options</h3>
+										<div class="el-content uk-panel uk-margin-top">
+											<div class="uk-child-width-1-2@s uk-child-width-1-3@m uk-grid uk-grid-stack" uk-grid="">
+												<div>
+													<div class="uk-card uk-card-default uk-card-body">
+														<h3 class="uk-card-title">Title</h3>
+														<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+														<p><a class="uk-button uk-button-primary" href="#modal" uk-toggle="" role="button">Modal Button</a></p>
+													</div>
+												</div>
+												
 											</div>
-											<input class="blue-btn " name="domainCheck" id="domainCheck" type="submit" value="Domain Check">
-
-											<input type="hidden" id="zoneId" name="zoneId">
-											<input type="hidden" id="zoneName" name="zoneName">
-
-											<div class="input-group">
-												<input class="blue-btn " id="account-token" type="submit" value="Create Account token">
-											</div>
-											<div class="input-group">
-												<div class="accountTokenDiv" style="display:none;">
-													<input class="input-field" id="accountTokenId" readonly type="text" aria-label="Input">
-													<div class="copyIcon" style="display:inline-block;">
-														<a class="copy-icon" data-tooltip-location="top" uk-icon="copy" data-placement="bottom" data-clipboard-target="#accountTokenId" onclick="copyToClipboard('#accountTokenId')"></a>
+											<div id="modal" class="uk-flex-top uk-modal" uk-modal="">
+												<div class="uk-modal-dialog uk-margin-auto-vertical" role="dialog" aria-modal="true">
+													<button class="uk-modal-close-default uk-icon uk-close" type="button" uk-close="" aria-label="Close">
+														<svg width="14" height="14" viewBox="0 0 14 14">
+															<line fill="none" stroke="#000" stroke-width="1.1" x1="1" y1="1" x2="13" y2="13"></line>
+															<line fill="none" stroke="#000" stroke-width="1.1" x1="13" y1="1" x2="1" y2="13"></line>
+														</svg>
+													</button>
+													<div class="uk-modal-header"><h2 class="uk-modal-title">Modal Title</h2></div>
+													<div class="uk-modal-body">
+														<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+														<p><a class="uk-button uk-button-primary">Save</a></p>
 													</div>
 												</div>
 											</div>
 										</div>
-									</td>
-									<td>
-										<div class="ss-cloudflare-tab2-col">
-											<div>
-												<input type="submit" name="xmlrpc" value="XMLRPC Block" class="ruleBtnClick blue-btn ">
-												<span class="material-symbols-rounded" id="xmlrpc"></span>
-											</div>
-											<div><input type="submit" name="adminLogin" value="UK Admin / Login" class="ruleBtnClick blue-btn ">
-												<span class="material-symbols-rounded" id="adminLogin"></span>
-											</div>
-											<div><input type="submit" name="adminSecurity" value="Admin Security Check" class="ruleBtnClick blue-btn ">
-												<span class="material-symbols-rounded" id="adminSecurity"></span>
-											</div>
-											<div><input type="submit" name="failover" value="Failover Protection" class="ruleBtnClick blue-btn ">
-												<span class="material-symbols-rounded" id="failover"></span>
-											</div>
-											<div><input type="submit" name="elasticEmail" value="Elastic Email" class="ruleBtnClick blue-btn ">
-												<span class="material-symbols-rounded" id="elasticEmail"></span>
+									</li>
+									<li class="el-item uk-margin-remove-first-child" id="uk-tab-6" role="tabpanel" aria-labelledby="uk-tab-5" style="min-height: 337.3px;">
+										<h3 class="el-title uk-margin-top uk-margin-remove-bottom">Cloudflare Control</h3>
+										<div class="overlay"></div>
+										<div class="el-content uk-panel uk-margin-top">
+											<div uk-grid="" class="uk-grid uk-grid-stack">
+												<div class="uk-width-1-2@m">
+													<form class="uk-form-stacked uk-width-large">
+														<div class="uk-margin">
+															<label class="uk-form-label" for="">Cloudflare API Credentials</label>
+															<input type="hidden" name="cloudflare_email" id="cloudflare_email" value="<?php echo (get_option('ss_cloudflare_email') != '')?get_option('ss_cloudflare_email'):''; ?>">
+															<input type="hidden" name="cloudflare_api_token" id="cloudflare_api_token" value="<?php echo (get_option('ss_cloudflare_api_token') != '')?get_option('ss_cloudflare_api_token'):''; ?>">
+															<input type="hidden" name="cloudflare_bearer_token" id="cloudflare_bearer_token" value="<?php echo (get_option('ss_cloudflare_bearer_token') != '')?get_option('ss_cloudflare_bearer_token'):''; ?>">
+															<div class="uk-child-width-1-1">
+																<div class="uk-inline">
+																	<span class="uk-form-icon uk-icon" uk-icon="icon: world">
+																		<svg width="20" height="20" viewBox="0 0 20 20">
+																			<path fill="none" stroke="#000" d="M1,10.5 L19,10.5"></path>
+																			<path fill="none" stroke="#000" d="M2.35,15.5 L17.65,15.5"></path>
+																			<path fill="none" stroke="#000" d="M2.35,5.5 L17.523,5.5"></path>
+																			<path
+																				fill="none"
+																				stroke="#000"
+																				d="M10,19.46 L9.98,19.46 C7.31,17.33 5.61,14.141 5.61,10.58 C5.61,7.02 7.33,3.83 10,1.7 C10.01,1.7 9.99,1.7 10,1.7 L10,1.7 C12.67,3.83 14.4,7.02 14.4,10.58 C14.4,14.141 12.67,17.33 10,19.46 L10,19.46 L10,19.46 L10,19.46 Z"
+																			></path>
+																			<circle fill="none" stroke="#000" cx="10" cy="10.5" r="9"></circle>
+																		</svg>
+																	</span>
+																	<input id="domainName" class="uk-input domainName" type="text" placeholder="yourdomain.com" />
+																	<span class="material-symbols-rounded" id="domainNameCheck"></span>
+																	<input type="hidden" id="zoneId" name="zoneId">
+																	<input type="hidden" id="zoneName" name="zoneName">
+																</div>
+																<p><a class="uk-button uk-button-default domainCheck" name="domainCheck" id="domainCheck">Domain Check</a></p>
+															</div>
+
+															<div class="uk-child-width-1-1">
+																<div class="accountTokenDiv" style="display:none;">
+																	<input class="uk-input" id="accountTokenId" readonly type="text" aria-label="Input">
+																	<div class="copyIcon" style="display:inline-block;">
+																		<a class="copy-icon" data-tooltip-location="top" uk-icon="copy" data-placement="bottom" data-clipboard-target="#accountTokenId" onclick="copyToClipboard('#accountTokenId')"></a>
+																	</div>
+																</div>
+															</div>
+
+														</div>
+													</form>
+												</div>
+												<div class="uk-width-1-2@m">
+													<div uk-grid="" class="uk-grid-small uk-grid-width-auto uk-grid uk-grid-stack">
+														<div>
+															<p>
+																<a class="uk-button accountToken_btn" id="account-token">
+																	<span uk-icon="nut" class="uk-icon">
+																		<svg width="20" height="20" viewBox="0 0 20 20">
+																			<polygon fill="none" stroke="#000" points="2.5,5.7 10,1.3 17.5,5.7 17.5,14.3 10,18.7 2.5,14.3"></polygon>
+																			<circle fill="none" stroke="#000" cx="10" cy="10" r="3.5"></circle>
+																		</svg>
+																	</span>
+																	Create Account Token
+																</a>
+															</p>
+														</div>
+														<div>
+															<p>
+																<a class="uk-button uk-button-secondary ruleBtnClick xmlrpc" name="xmlrpc">
+																	<span uk-icon="folder" class="uk-icon">
+																		<svg width="20" height="20" viewBox="0 0 20 20"><polygon fill="none" stroke="#000" points="9.5 5.5 8.5 3.5 1.5 3.5 1.5 16.5 18.5 16.5 18.5 5.5"></polygon></svg>
+																	</span>
+																	XMLRPC Block
+																</a>
+															</p>
+														</div>
+														<div>
+															<p>
+																<a class="uk-button uk-button-secondary ruleBtnClick adminLogin" name="adminLogin">
+																	<span uk-icon="lock" class="uk-icon">
+																		<svg width="20" height="20" viewBox="0 0 20 20">
+																			<rect fill="none" stroke="#000" height="10" width="13" y="8.5" x="3.5"></rect>
+																			<path fill="none" stroke="#000" d="M6.5,8 L6.5,4.88 C6.5,3.01 8.07,1.5 10,1.5 C11.93,1.5 13.5,3.01 13.5,4.88 L13.5,8"></path>
+																		</svg>
+																	</span>
+																	UK Admin / Login
+																</a>
+															</p>
+														</div>
+														<div>
+															<p>
+																<a class="uk-button uk-button-secondary ruleBtnClick adminSecurity" name="adminSecurity">
+																	<span uk-icon="user" class="uk-icon">
+																		<svg width="20" height="20" viewBox="0 0 20 20">
+																			<circle fill="none" stroke="#000" stroke-width="1.1" cx="9.9" cy="6.4" r="4.4"></circle>
+																			<path fill="none" stroke="#000" stroke-width="1.1" d="M1.5,19 C2.3,14.5 5.8,11.2 10,11.2 C14.2,11.2 17.7,14.6 18.5,19.2"></path>
+																		</svg>
+																	</span>
+																	Admin Security Check
+																</a>
+															</p>
+														</div>
+														<div>
+															<p>
+																<a class="uk-button uk-button-secondary ruleBtnClick failover" name="failover">
+																	<span uk-icon="future" class="uk-icon">
+																		<svg width="20" height="20" viewBox="0 0 20 20">
+																			<polyline points="19 2 18 2 18 6 14 6 14 7 19 7 19 2"></polyline>
+																			<path fill="none" stroke="#000" stroke-width="1.1" d="M18,6.548 C16.709,3.29 13.354,1 9.6,1 C4.6,1 0.6,5 0.6,10 C0.6,15 4.6,19 9.6,19 C14.6,19 18.6,15 18.6,10"></path>
+																			<rect x="9" y="4" width="1" height="7"></rect>
+																			<path d="M13.018,14.197 L9.445,10.625" fill="none" stroke="#000" stroke-width="1.1"></path>
+																		</svg>
+																	</span>
+																	Failover Protection
+																</a>
+															</p>
+														</div>
+														<div>
+															<p>
+																<a class="uk-button uk-button-secondary ruleBtnClick elasticEmail" name="elasticEmail">
+																	<span uk-icon="mail" class="uk-icon">
+																		<svg width="20" height="20" viewBox="0 0 20 20">
+																			<polyline fill="none" stroke="#000" points="1.4,6.5 10,11 18.6,6.5"></polyline>
+																			<path d="M 1,4 1,16 19,16 19,4 1,4 Z M 18,15 2,15 2,5 18,5 18,15 Z"></path>
+																		</svg>
+																	</span>
+																	Elastic Mail
+																</a>
+															</p>
+														</div>
+													</div>
+												</div>
 											</div>
 										</div>
-									</td>
-								</table>
+									</li>
+								</ul>
 							</div>
-						</form>
-					<?php } ?>
+						</div>
+					</div>
 				</div>
-			</div>
-		</div>
+			</div>  
+		</section>
 		<?php
 	}
 
@@ -813,7 +937,7 @@ class Ss_Cloudflare {
 				"expires_on" => "",
 				"condition" => [
 					"request.ip" => [
-						"in" => ['0.0.0.0/0' => null],
+						"in" => [],
 						"not_in" => []
 					]
 				]
